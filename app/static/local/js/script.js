@@ -166,8 +166,7 @@
     $("#logout-btn").on('click', function() {
         //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         FB.logout(function(response) {
-            //noinspection JSUnresolvedVariable,JSUnresolvedFunction
-            FB.Auth.setAuthResponse(null, 'unknown');
+            console.log(response)
             window.location.href = '/';
         });
     });

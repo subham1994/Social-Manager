@@ -30,7 +30,7 @@ def login():
 					)
 					db.session.add(page)
 				db.session.commit()
-				return jsonify({'status': 200, 'redirect_to': url_for('pages')})
+				return jsonify({'status': 200})
 		except Exception as e:
 			print(e)
 		else:
