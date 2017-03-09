@@ -40,6 +40,5 @@ def login():
 
 @social_manager.route('/pages/<user_id>')
 def pages(user_id):
-	print(url_for('static', filename='vendor/materialize/js/materialize.min.js'))
 	user = User.query.get(user_id)
 	return render_template('pages.html', user=user)
