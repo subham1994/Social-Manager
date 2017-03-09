@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+{% block personal_info %}
+    <img class="profile-img" src="{{ user.photo }}">
+    <div class="profile-name">{{ user.first_name + ' ' + user.last_name }}</div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+    {% for page in user.pages %}
+        <div class="col l4 s12">
+            <div class="card">
+                <div class="card-content center">
+                    <img src="{{ page.photo }}" id="page-img" alt="page-pic">
+                </div>
+                <div class="card-content grey lighten-4 center">
+                    <div class="card-title">{{ page.name }}</div>
+                    <strong>{{ page.category }}</strong><br><br>
+                    <button class="btn blue waves-effect waves-light">upload image</button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

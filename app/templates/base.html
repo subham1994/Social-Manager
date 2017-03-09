@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Social Manager{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"></link>
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendor/materialize/css/materialize.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='local/css/style.css') }}">
+        <style>
+            {% block custom_style %}{% endblock %}
+        </style>
+    </head>
+
+    <body>
+        {% block page_content %}{% endblock %}
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="{{ url_for('static', filename='vendor/materialize/js/materialize.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='local/js/script.js') }}"></script>
+    </body>
+</html>

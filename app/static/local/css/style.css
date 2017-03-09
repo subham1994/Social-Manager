@@ -1,0 +1,152 @@
+@media (min-width: 993px) {
+    .container{
+        width: 90%;
+    }
+
+    nav .container {
+        padding-left: 240px;
+    }
+
+    #main-content {
+        padding-left: 240px;
+    }
+}
+
+@media (max-width: 993px) {
+    .container{
+        width: 90%;
+    }
+
+    span.brand-logo {
+        right: 50px;
+    }
+}
+
+body {
+    background: #D8DDE6;
+    font-family: 'Lato', sans-serif;
+}
+
+#main-content {
+    margin-top: 30px;
+}
+
+#page-img {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+
+.icon-block .material-icons {
+	font-size: inherit;
+}
+
+.profile-name {
+    color: #FFF;
+    font-weight: 500;
+    font-size: 17px;
+    position: relative;
+    top: -15px;
+}
+
+span.brand-logo {
+    position: relative;
+    color : #A1B7E5;
+}
+
+span.brand-logo .current-page {
+    position: relative;
+    font-weight: 500;
+    top: -4px;
+}
+
+.profile-img {
+    border-radius: 50%;
+}
+
+.side-nav li.active {
+    border-left: 2px solid #FFFFFF;
+    background-color: rgba(0,0,0,0.1);
+}
+
+ul.side-nav.fixed li a.logo {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 20px;
+    margin-top: 7px;
+    margin-bottom: 25px;
+}
+
+ul.side-nav.fixed li a i {
+    color: #FFFFFF;
+}
+
+nav ul a {
+    font-weight: 600;
+    font-size: 14px;
+    color: #576366 !important;
+}
+
+.header-text {
+    font-weight: 600;
+    font-size: 14px;
+    color: #576366 !important;
+}
+
+.side-nav {
+    background: #2C3E50;
+}
+
+.side-nav a {
+    color: #FFF !important;
+}
+
+.btn {
+    color: #FFF;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-block {
+    display: block;
+}
+
+.input-field label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.input-field label.active {
+    font-weight: 600;
+    font-size: 14px;
+    color: #4285f4;
+}
+
+input[type="text"] {
+    border-bottom: 1px solid #cfd8dc;
+}
+
+.input-field input[type="text"]:focus {
+    border-bottom: 1px solid #4285f4;
+    box-shadow: 0 1px 0 0 #4285f4;
+}
+
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #ca1010;
+    box-shadow: 0 1px 0 0 #ca1010;
+}
+
+.input-field input[type=text].valid {
+    border-bottom: 1px solid #78FA89;
+    box-shadow: 0 1px 0 0 #78FA89;
+}

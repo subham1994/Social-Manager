@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block page_content %}
+
+    <ul class="side-nav fixed" id="slide-out">
+        <li><a href="" class="logo">Social Manager</a></li>
+        <li class="center">
+            {% block personal_info %}{% endblock %}
+        </li>
+        <br>
+        <li class="active"><a class="waves-effect" href="#!"><i class="material-icons">description</i>Pages</a></li>
+        <li><a class="waves-effect" href="#!"><i class="material-icons">today</i>Activity</a></li>
+        <li><a class="waves-effect" id="logout-btn"><i class="material-icons">power_settings_new</i>Logout</a></li>
+    </ul>
+
+    <div class="navbar-fixed">
+        <nav class="white">
+            <a href="#" data-activates="slide-out" class="button-collapse" style="color: #576366;">
+                <i class="material-icons">menu</i>
+            </a>
+            <div class="container">
+                <span class="brand-logo center">
+                    <i class="large material-icons">description</i>
+                    <span class="current-page">Pages</span>
+                </span>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container" id="main-content">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block custom_style %}
+    body {
+        background: #FFF;
+    }
+
+    @media (min-width: 993px) {
+        .container{
+            width: 70%;
+        }
+    }
+{% endblock %}
+
+{% block page_content %}
+
+    <div class="section no-pad-bot" id="index-banner" style="position: relative; top: -35px">
+        <div class="container">
+            <br><br>
+            <h1 class="header center blue-text">Social Manager</h1>
+            <div class="row center">
+                <h5 class="header col s12 light">A simple and elegant way to manage all your facebook pages</h5>
+            </div>
+            <div class="row center">
+                <a href="#" class="btn blue waves-effect waves-light btn-large" id="fb-login" style="background: #4267b2 !important">
+                    <span class="fa fa-stack">
+                        <i class="fa fa-facebook"></i>
+                    </span>
+                    continue with facebook
+                </a>
+            </div>
+            <br><br>
+        </div>
+    </div>
+
+
+    <div class="container" style="margin-top: -70px">
+        <div class="section">
+            <!--   Icon Section   -->
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="card">
+                        <div class="icon-block" style="padding-top: 10px;">
+                            <h1 class="center light-blue-text"><i class="material-icons">flash_on</i></h1>
+                        </div>
+                        <div class="card-content grey lighten-4">
+                            <h5 class="center card-title"><strong>Speed</strong></h5>
+                            <p class="light center">increase your productivity by managing all your pages at one place.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="card">
+                        <div class="icon-block" style="padding-top: 10px;">
+                            <h1 class="center light-blue-text"><i class="material-icons">today</i></h1>
+                        </div>
+                        <div class="card-content grey lighten-4">
+                            <h5 class="center card-title"><strong>Activity log</strong></h5>
+                            <p class="light center">Upload images and keep track of all your page activies at one place.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col s12 m4">
+                    <div class="card">
+                        <div class="icon-block" style="padding-top: 10px;">
+                            <h1 class="center light-blue-text"><i class="material-icons">verified_user</i></h1>
+                        </div>
+                        <div class="card-content grey lighten-4">
+                            <h5 class="center card-title"><strong>Safe</strong></h5>
+                            <p class="light center">We respect your privacy and we never post anything without your consent.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
