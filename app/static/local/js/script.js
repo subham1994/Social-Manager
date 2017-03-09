@@ -160,7 +160,7 @@
     $("#logout-btn").on('click', function() {
         //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         FB.logout(function(response) {
-            //noinspection JSUnresolvedVariable,JSUnresolvedFunction
+            console.log(response)
             window.location.href = '/';
         });
     });
