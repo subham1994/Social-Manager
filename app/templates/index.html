@@ -7,8 +7,18 @@
             {% block personal_info %}{% endblock %}
         </li>
         <br>
-        <li class="active"><a class="waves-effect" href="#!"><i class="material-icons">description</i>Pages</a></li>
-        <li><a class="waves-effect" href="#!"><i class="material-icons">today</i>Activity</a></li>
+        <li class="active" id="id-pages">
+            <a class="waves-effect">
+                <i class="material-icons">description</i>
+                Pages
+            </a>
+        </li>
+        <li id="id-activity">
+            <a class="waves-effect" href="">
+                <i class="material-icons">today</i>
+                Activity
+            </a>
+        </li>
         <li><a class="waves-effect" id="logout-btn"><i class="material-icons">power_settings_new</i>Logout</a></li>
     </ul>
 
@@ -19,8 +29,7 @@
             </a>
             <div class="container">
                 <span class="brand-logo center">
-                    <i class="large material-icons">description</i>
-                    <span class="current-page">Pages</span>
+                    <span class="current-page" id="id-current-page">Pages</span>
                 </span>
             </div>
         </nav>

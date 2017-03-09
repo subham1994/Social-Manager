@@ -1,5 +1,23 @@
 (function() {
 
+    // function to get a csrfTokenVal to be passed into the headers
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
     // init sidebar
     $('.button-collapse').sideNav({
         menuWidth: 240,
@@ -30,12 +48,12 @@
             var currentLocation = window.location.pathname.split('/')
             if (currentLocation[0] === "" && currentLocation[1] === "") {
                 // noinspection JSUnresolvedVariable
-                window.location.href = '/pages/' + response.authResponse.userID;
+                window.location.href = '/user/' + response.authResponse.userID;
             }
         }
     }
 
-
+    // init FB object
     window.fbAsyncInit = function() {
         //noinspection JSUnresolvedVariable
         FB.init({
@@ -64,7 +82,7 @@
 
 
     /**
-     * Check if a login status of a user
+     * Check the login status of a user
      */
     var checkLoginState = function() {
         //noinspection JSUnresolvedVariable,JSUnresolvedFunction
@@ -160,16 +178,23 @@
     $("#logout-btn").on('click', function() {
         //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         FB.logout(function(response) {
-            console.log(response)
+            //noinspection JSUnresolvedVariable,JSUnresolvedFunction
             window.location.href = '/';
         });
     });
 
-    var updateActivityLog = function(pageName, size, fileName, callback) {
+
+    /**
+     * updates the user activity table on successful image upload
+     * @param pageName: String, the name of page
+     * @param size: size of the image in MB
+     * @param fileName: name of image file
+     * */
+    var updateActivityLog = function(userId, pageName, size, fileName) {
         var payLoad = {
             method: 'POST',
             mode: 'same-origin',
-            body: JSON.stringify({page: pageName, size: size, file: fileName}),
+            body: JSON.stringify({id: userId, page: pageName, size: size, file: fileName}),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -182,10 +207,7 @@
             }
             return response.json()
         }).then(function(data) {
-            if (data.status === 200) {
-                //noinspection JSUnresolvedVariable
-                callback();
-            } else {
+            if (data.status !== 200) {
                 //noinspection JSUnresolvedVariable
                 console.log(data.err);
             }
@@ -200,8 +222,11 @@
     // upload file
     $('#upload-file').on('click', function(evt) {
         evt.preventDefault();
+
+        var userId = $(this).attr('data-id');
         var formData = new FormData($('#image-upload-form')[0]);
         var size = $('#image-field')[0].files[0].size / 1000000;
+
         if (size > 1) {
             Materialize.toast('File Size must be smaller than be 1 MB', 3000);
             return;
@@ -221,24 +246,26 @@
             return response.json()
         }).then(function(data) {
             if (data.status === 200) {
-                //noinspection JSUnresolvedVariable
-                updateActivityLog(pageName, size, data.filename, function () {
-                    //noinspection JSUnresolvedVariable,JSUnresolvedFunction
-                    FB.api("/" + id + "/photos", "POST", {
-                            "url": 'https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a'
-                        },
-                        function (response) {
-                            if (response && !response.error) {
-                                Materialize.toast('Image uploaded successfully');
-                                console.log(response);
-                            } else {
-                                Materialize.toast('An error occured while uploading file, please try again', 3000);
-                                console.log(response.error)
-                            }
+                $(this).attr('value', 'uploading...')
+                //noinspection JSUnresolvedVariable,JSUnresolvedFunction
+                FB.api("/" + id + "/photos", "POST", {
+                        "url": 'http://subham1994.pythonanywhere.com' + data.path
+                    },
+                    function (response) {
+                        if (response && !response.error) {
+                            Materialize.toast('Image uploaded successfully', 3000);
+                            console.log(response);
+                            //noinspection JSUnresolvedVariable
+                            updateActivityLog(userId, pageName, size, data.filename);
+                            $(this).attr('value', 'upload');
+                            $('#file-modal').modal('close');
+                        } else {
+                            $(this).attr('value', 'upload');
+                            Materialize.toast('An error occured while uploading file, please try again', 3000);
+                            console.log(response.error)
                         }
-                    );
-                });
-                $('#file-modal').modal('close');
+                    }
+                );
             } else {
                 //noinspection JSUnresolvedVariable
                 Materialize.toast(data.msg, 3000);
@@ -247,5 +274,33 @@
             console.log(err);
             Materialize.toast('An error occured while uploading file, please try again', 3000);
         });
+    });
+
+
+    $('#id-pages').on('click', function(evt) {
+        evt.preventDefault();
+        window.location.href = '/user/' + window.location.pathname.split('/')[2]
     })
+
+    $('#id-activity').on('click', function(event) {
+        event.preventDefault();
+        $(this).toggleClass('active');
+        $('#id-pages').toggleClass('active');
+
+        $.ajax({
+	        url: '/activities',
+	        type: 'POST',
+	        data: JSON.stringify({id: window.location.pathname.split('/')[2]}),
+	        async: true,
+	        success: function(html) {
+                $('#main-content').html('');
+                $('#id-current-page').html('Activities')
+	            $('#main-content').append(html);
+	        },
+         	headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken
+            }
+		});
+    });
 }());

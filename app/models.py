@@ -21,6 +21,7 @@ class User(db.Model):
 	last_name = db.Column(db.String(64))
 	photo = db.Column(db.Text)
 	pages = db.relationship('Page', backref='user')
+	activities = db.relationship('Activity', backref='user')
 
 	def __repr__(self):
 		return self.first_name + ' ' + self.last_name
@@ -33,6 +34,7 @@ class Activity(db.Model):
 	filename = db.Column(db.String(64))
 	created_at = db.Column(db.Float)
 	size = db.Column(db.Integer)
+	user_id = db.Column(db.String(64), db.ForeignKey('users.id'))
 
 	def __repr__(self):
 		return self.page_name + ' ' + self.filename

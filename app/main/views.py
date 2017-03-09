@@ -1,11 +1,12 @@
-import os, datetime
+import datetime
+import os
+
 from flask import render_template, request, jsonify, url_for
 from werkzeug.utils import secure_filename
 
 from . import social_manager
 from .. import db
 from ..models import User, Page, Activity
-
 
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
@@ -48,7 +49,7 @@ def login():
 	return render_template('login.html')
 
 
-@social_manager.route('/pages/<user_id>')
+@social_manager.route('/user/<user_id>')
 def pages(user_id):
 	user = User.query.get(user_id)
 	return render_template('pages.html', user=user)
@@ -75,6 +76,7 @@ def update_activity():
 	if request.method == 'POST' and request.json:
 		try:
 			activity = Activity(
+				user_id=request.json.get('id'),
 				page_name=request.json.get('page'),
 				filename=request.json.get('file'),
 				created_at=datetime.datetime.timestamp(datetime.datetime.now()),
@@ -86,3 +88,12 @@ def update_activity():
 		except Exception as e:
 			return jsonify({'status': 500, 'msg': 'Could not update activity list, please try again', 'err': e})
 	return jsonify({'status': 500, 'msg': 'No activity to update'})
+
+
+@social_manager.route('/activities', methods=['POST'])
+def activities():
+	if request.method == 'POST' and request.json:
+		user_id = request.json.get('id')
+		user = User.query.get(user_id)
+		return render_template('activities.html', activities=user.activities)
+	return '<h3 class="center">No Data Found !</h3>'

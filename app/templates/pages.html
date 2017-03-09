@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-
+    {% if user.pages %}
     <div class="row">
     {% for page in user.pages %}
         <div class="col l4 s12">
@@ -28,6 +28,9 @@
         </div>
     {% endfor %}
     </div>
+    {% else %}
+    <h3 class="center" style="margin-top: 200px;">You don't own any pages !</h3>
+    {% endif %}
 
 
     <div id="file-modal" class="modal">
@@ -48,7 +51,7 @@
                 <br>
             </div>
             <div class="modal-footer grey lighten-4">
-                <input type="submit" class="btn-flat waves-effect waves-light" id="upload-file">
+                <input data-id="{{ user.id }}" type="submit" value="upload" class="btn-flat waves-effect waves-light" id="upload-file">
             </div>
         </form>
     </div>

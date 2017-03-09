@@ -1,0 +1,31 @@
+{% block content %}
+    <div class="row">
+        <div class="col l12 s12">
+            {% if activities %}
+                <table class="highlight centered z-depth-1 white responsive-table">
+                    <thead>
+                        <tr>
+                            <th data-field="File-Name">File Name</th>
+                            <th data-field="Page">Page</th>
+                            <th data-field="File-Size">File Size (MB)</th>
+                            <th data-field="Uploaded-At">Uploaded At</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for activity in activities %}
+                            <tr>
+                                <td><strong>{{ activity.filename }}</strong></td>
+                                <td><strong>{{ activity.page_name }}</strong></td>
+                                <td><strong>{{ activity.size }}</strong></td>
+                                <td><strong>{{ parse_epoch(activity.created_at) }}</strong></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h3 class="center" style="margin-top: 200px;">No Activities Yet !</h3>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
