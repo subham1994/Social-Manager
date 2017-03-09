@@ -1,5 +1,4 @@
-from . import db, login_manager
-from flask_login import UserMixin
+from . import db
 
 
 class Page(db.Model):
@@ -15,7 +14,7 @@ class Page(db.Model):
 		return self.name
 
 
-class User(db.Model, UserMixin):
+class User(db.Model):
 	__tablename__ = 'users'
 	id = db.Column(db.String(64), primary_key=True)
 	first_name = db.Column(db.String(64))
@@ -25,15 +24,3 @@ class User(db.Model, UserMixin):
 
 	def __repr__(self):
 		return self.first_name + ' ' + self.last_name
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    """
-    callback function to load user object, given an email as unicode string.
-
-    :param user_id: facebook id of the user
-    :type user_id: str
-    :return: User object, if found, else None.
-    """
-    return User.query.get(user_id)

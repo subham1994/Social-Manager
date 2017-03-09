@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, jsonify
+from flask import render_template, request, url_for, jsonify
 from . import social_manager
 from .. import db
 from ..models import User, Page
