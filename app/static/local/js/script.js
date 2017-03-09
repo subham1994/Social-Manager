@@ -45,7 +45,7 @@
     window.fbAsyncInit = function() {
         //noinspection JSUnresolvedVariable
         FB.init({
-            appId: '159699801213250',
+            appId: '1928463530773255',
             cookie: true,
             xfbml: true,
             version: 'v2.8'
@@ -167,7 +167,6 @@
         //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         FB.logout(function(response) {
             //noinspection JSUnresolvedVariable,JSUnresolvedFunction
-            FB.Auth.setAuthResponse(null, 'unknown');
             window.location.href = '/';
         });
     });
