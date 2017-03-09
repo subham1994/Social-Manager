@@ -1,28 +1,22 @@
 (function() {
 
-    // function to get a csrfTokenVal to be passed into the headers
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    var csrftoken = getCookie('csrftoken');
-
-
+    // init sidebar
     $('.button-collapse').sideNav({
         menuWidth: 240,
         draggable: true // Choose whether you can drag to open on touch screens
     });
+
+    // init modal
+    $('.modal').modal({
+        dismissible: false
+    });
+
+
+    var id, pageName;
+    $('.modal-trigger').on('click', function() {
+        id = $(this).attr('id')
+        pageName = $(this).attr('data-name');
+    })
 
 
     /**
@@ -45,7 +39,7 @@
     window.fbAsyncInit = function() {
         //noinspection JSUnresolvedVariable
         FB.init({
-            appId: '1928463530773255',
+            appId: '159699801213250',
             cookie: true,
             xfbml: true,
             version: 'v2.8'
@@ -159,7 +153,7 @@
             } else {
                 Materialize.toast('User cancelled login or did not fully authorize.', 3000);
             }
-        }, {scope: 'public_profile, pages_show_list'});
+        }, {scope: 'public_profile, pages_show_list, publish_actions, manage_pages, publish_pages'});
     });
 
 
@@ -170,4 +164,88 @@
             window.location.href = '/';
         });
     });
+
+    var updateActivityLog = function(pageName, size, fileName, callback) {
+        var payLoad = {
+            method: 'POST',
+            mode: 'same-origin',
+            body: JSON.stringify({page: pageName, size: size, file: fileName}),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
+
+        //noinspection JSUnresolvedFunction
+        fetch('/update-activity', payLoad).then(function(response) {
+            if (response.status !== 200) {
+                throw new Error();
+            }
+            return response.json()
+        }).then(function(data) {
+            if (data.status === 200) {
+                //noinspection JSUnresolvedVariable
+                callback();
+            } else {
+                //noinspection JSUnresolvedVariable
+                console.log(data.err);
+            }
+            //noinspection JSUnresolvedVariable
+            Materialize.toast(data.msg, 3000);
+        }).catch(function(err) {
+            console.log(err);
+            Materialize.toast('An error occured while updating activity, please try again', 3000);
+        });
+    }
+
+    // upload file
+    $('#upload-file').on('click', function(evt) {
+        evt.preventDefault();
+        var formData = new FormData($('#image-upload-form')[0]);
+        var size = $('#image-field')[0].files[0].size / 1000000;
+        if (size > 1) {
+            Materialize.toast('File Size must be smaller than be 1 MB', 3000);
+            return;
+        }
+
+        var payLoad = {
+            method: 'POST',
+            mode: 'same-origin',
+            body: formData,
+        };
+
+        // noinspection JSUnresolvedFunction
+        fetch('/upload', payLoad).then(function(response) {
+            if (response.status !== 200) {
+                throw new Error();
+            }
+            return response.json()
+        }).then(function(data) {
+            if (data.status === 200) {
+                //noinspection JSUnresolvedVariable
+                updateActivityLog(pageName, size, data.filename, function () {
+                    //noinspection JSUnresolvedVariable,JSUnresolvedFunction
+                    FB.api("/" + id + "/photos", "POST", {
+                            "url": 'https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon.png?v=c78bd457575a'
+                        },
+                        function (response) {
+                            if (response && !response.error) {
+                                Materialize.toast('Image uploaded successfully');
+                                console.log(response);
+                            } else {
+                                Materialize.toast('An error occured while uploading file, please try again', 3000);
+                                console.log(response.error)
+                            }
+                        }
+                    );
+                });
+                $('#file-modal').modal('close');
+            } else {
+                //noinspection JSUnresolvedVariable
+                Materialize.toast(data.msg, 3000);
+            }
+        }).catch(function(err) {
+            console.log(err);
+            Materialize.toast('An error occured while uploading file, please try again', 3000);
+        });
+    })
 }());

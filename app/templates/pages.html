@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
+
     <div class="row">
     {% for page in user.pages %}
         <div class="col l4 s12">
@@ -16,10 +17,39 @@
                 <div class="card-content grey lighten-4 center">
                     <div class="card-title">{{ page.name }}</div>
                     <strong>{{ page.category }}</strong><br><br>
-                    <button class="btn blue waves-effect waves-light">upload image</button>
+                    <a data-name="{{ page.name }}"
+                       id="{{ page.id }}"
+                       class="modal-trigger btn blue waves-effect waves-light"
+                       href="#file-modal">
+                        upload image
+                    </a>
                 </div>
             </div>
         </div>
     {% endfor %}
+    </div>
+
+
+    <div id="file-modal" class="modal">
+        <a href="#!" class="modal-close" id="close-modal">&#10006</a>
+        <form id="image-upload-form" enctype = "multipart/form-data">
+            <div class="modal-content">
+                <h5 class="right-align" style="color: #A1B7E5;">Upload Image</h5>
+                <br>
+                <div class="file-field input-field center-block" style="width: 85%;">
+                    <div class="btn btn-large blue waves-effect waves-light upload-btn">
+                        <span>Select File</span>
+                        <input type="file" name="file" id="image-field">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div class="modal-footer grey lighten-4">
+                <input type="submit" class="btn-flat waves-effect waves-light" id="upload-file">
+            </div>
+        </form>
     </div>
 {% endblock %}

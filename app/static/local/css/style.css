@@ -37,6 +37,15 @@ body {
     border-radius: 50%;
 }
 
+#close-modal {
+    position: fixed;
+    top: 7px;
+    right: 7px;
+    color: black;
+    font-weight: 600;
+    font-size: 12px;
+}
+
 .icon-block {
   padding: 0 15px;
 }

@@ -1,7 +1,17 @@
-from flask import render_template, request, url_for, jsonify
+import os, datetime
+from flask import render_template, request, jsonify, url_for
+from werkzeug.utils import secure_filename
+
 from . import social_manager
 from .. import db
-from ..models import User, Page
+from ..models import User, Page, Activity
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+
+
+def is_file_valid(file):
+	return '.' in file.filename and file.filename.rsplit('.', 1)[1] in set(['png', 'jpg', 'jpeg', 'gif'])
 
 
 @social_manager.route('/', methods=['GET', 'POST'])
@@ -42,3 +52,37 @@ def login():
 def pages(user_id):
 	user = User.query.get(user_id)
 	return render_template('pages.html', user=user)
+
+
+@social_manager.route('/upload', methods=['POST'])
+def upload():
+	if request.method == "POST" and 'file' in request.files:
+		file = request.files.get('file')
+		if file and is_file_valid(file):
+			filename = secure_filename(file.filename)
+			file.save(BASE_DIR + '/static/uploads/' + filename)
+			return jsonify({
+				'status': 200,
+				'path': url_for('static', filename='uploads/' + filename),
+				'filename': filename
+			})
+		return jsonify({'status': 500, 'msg': 'File is not an image file'})
+	return jsonify({'status': 500, 'msg': 'Please post an image file'})
+
+
+@social_manager.route('/update-activity', methods=['POST'])
+def update_activity():
+	if request.method == 'POST' and request.json:
+		try:
+			activity = Activity(
+				page_name=request.json.get('page'),
+				filename=request.json.get('file'),
+				created_at=datetime.datetime.timestamp(datetime.datetime.now()),
+				size=request.json.get('size')
+			)
+			db.session.add(activity)
+			db.session.commit()
+			return jsonify({'status': 200, 'msg': 'Updated activities list'})
+		except Exception as e:
+			return jsonify({'status': 500, 'msg': 'Could not update activity list, please try again', 'err': e})
+	return jsonify({'status': 500, 'msg': 'No activity to update'})

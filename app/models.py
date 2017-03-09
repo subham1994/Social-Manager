@@ -24,3 +24,15 @@ class User(db.Model):
 
 	def __repr__(self):
 		return self.first_name + ' ' + self.last_name
+
+
+class Activity(db.Model):
+	__tablename__ = 'activities'
+	id = db.Column(db.Integer, primary_key=True)
+	page_name = db.Column(db.String(64))
+	filename = db.Column(db.String(64))
+	created_at = db.Column(db.Float)
+	size = db.Column(db.Integer)
+
+	def __repr__(self):
+		return self.page_name + ' ' + self.filename
