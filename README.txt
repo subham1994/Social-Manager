@@ -1,6 +1,6 @@
 Technologies Used:
     - Flask, jquery, materialize.css, python 3.5
-    - Application tested on: Firefox Version 50.1.0, Chrome Version 50.0.2661.102
+    - Application tested on: Firefox Version 50.1.0
 
 Note:
     - This application makes use of javascript promises which may not be supported by some older browsers

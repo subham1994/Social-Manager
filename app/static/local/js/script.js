@@ -57,7 +57,7 @@
     window.fbAsyncInit = function() {
         //noinspection JSUnresolvedVariable
         FB.init({
-            appId: '159699801213250',
+            appId: '1928463530773255',
             cookie: true,
             xfbml: true,
             version: 'v2.8'
@@ -222,6 +222,7 @@
     // upload file
     $('#upload-file').on('click', function(evt) {
         evt.preventDefault();
+        var self = $(this);
 
         var userId = $(this).attr('data-id');
         var formData = new FormData($('#image-upload-form')[0]);
@@ -229,8 +230,11 @@
 
         if (size > 1) {
             Materialize.toast('File Size must be smaller than be 1 MB', 3000);
+            self.val('upload');
             return;
         }
+
+        self.val('uploading...');
 
         var payLoad = {
             method: 'POST',
@@ -246,10 +250,9 @@
             return response.json()
         }).then(function(data) {
             if (data.status === 200) {
-                $(this).attr('value', 'uploading...')
                 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
                 FB.api("/" + id + "/photos", "POST", {
-                        "url": 'http://subham1994.pythonanywhere.com' + data.path
+                        "url": 'https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png'
                     },
                     function (response) {
                         if (response && !response.error) {
@@ -257,20 +260,21 @@
                             console.log(response);
                             //noinspection JSUnresolvedVariable
                             updateActivityLog(userId, pageName, size, data.filename);
-                            $(this).attr('value', 'upload');
                             $('#file-modal').modal('close');
                         } else {
-                            $(this).attr('value', 'upload');
                             Materialize.toast('An error occured while uploading file, please try again', 3000);
                             console.log(response.error)
                         }
+                        self.val('upload');
                     }
                 );
             } else {
+                self.val('upload');
                 //noinspection JSUnresolvedVariable
                 Materialize.toast(data.msg, 3000);
             }
         }).catch(function(err) {
+            self.val('upload');
             console.log(err);
             Materialize.toast('An error occured while uploading file, please try again', 3000);
         });
