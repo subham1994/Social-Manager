@@ -18,11 +18,27 @@
     }
     var csrftoken = getCookie('csrftoken');
 
+
+    // set the height of cards to equal lengths
+    function equalizeCardHeights() {
+    	var maxHeight    = 0;
+        var cardContents = $(".card .card-content");
+        cardContents.each(function(){
+            if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+        });
+        cardContents.height(maxHeight);
+    }
+
+
+    equalizeCardHeights();
+
+
     // init sidebar
     $('.button-collapse').sideNav({
         menuWidth: 240,
         draggable: true // Choose whether you can drag to open on touch screens
     });
+
 
     // init modal
     $('.modal').modal({
