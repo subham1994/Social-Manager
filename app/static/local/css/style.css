@@ -126,6 +126,17 @@ nav ul a {
     text-align: center;
 }
 
+
+th {
+    color: #576366;
+}
+
+td {
+    font-size: 13px;
+    font-weight: 600;
+    color : #777;
+}
+
 .btn-block {
     display: block;
 }

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col l12 s12">
             {% if activities %}
-                <table class="highlight centered z-depth-1 white responsive-table">
+                <table class="highlight centered bordered z-depth-1 white responsive-table">
                     <thead>
                         <tr>
                             <th data-field="File-Name">File Name</th>
@@ -15,10 +15,10 @@
                     <tbody>
                         {% for activity in activities %}
                             <tr>
-                                <td><strong>{{ activity.filename }}</strong></td>
-                                <td><strong>{{ activity.page_name }}</strong></td>
-                                <td><strong>{{ activity.size }}</strong></td>
-                                <td><strong>{{ parse_epoch(activity.created_at) }}</strong></td>
+                                <td>{{ activity.filename }}</td>
+                                <td>{{ activity.page_name }}</td>
+                                <td>{{ activity.size }}</td>
+                                <td>{{ parse_epoch(activity.created_at) }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>

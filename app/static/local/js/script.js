@@ -53,22 +53,6 @@
     })
 
 
-    /**
-     * The response object is returned with a status field that lets the
-     * app know the current login status of the person.
-     * @param response: Object['status']
-     * */
-    var statusChangeCallback = function(response) {
-        console.log(response);
-        if (response.status === 'connected') {
-            var currentLocation = window.location.pathname.split('/')
-            if (currentLocation[0] === "" && currentLocation[1] === "") {
-                // noinspection JSUnresolvedVariable
-                window.location.href = '/user/' + response.authResponse.userID;
-            }
-        }
-    }
-
     // init FB object
     window.fbAsyncInit = function() {
         //noinspection JSUnresolvedVariable
@@ -81,7 +65,7 @@
 
         //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
+            console.log(response);
         });
     };
 
@@ -94,18 +78,6 @@
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-
-
-
-    /**
-     * Check the login status of a user
-     */
-    var checkLoginState = function() {
-        //noinspection JSUnresolvedVariable,JSUnresolvedFunction
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
-    };
 
 
     /**
@@ -128,7 +100,7 @@
             if (response.status !== 200) {
                 throw new Error();
             }
-            checkLoginState();
+            window.location.href = '/user/' + data.profile.id;
         }).catch(function(err) {
                 Materialize.toast('Error while connecting to server', 3000);
                 console.log(err);
@@ -192,10 +164,24 @@
 
 
     $("#logout-btn").on('click', function() {
+        var userId = $(this).attr('data-user-id');
         //noinspection JSUnresolvedVariable,JSUnresolvedFunction
         FB.logout(function(response) {
-            //noinspection JSUnresolvedVariable,JSUnresolvedFunction
-            window.location.href = '/';
+            console.log(response);
+            $.ajax({
+                url: '/logout',
+                type: 'POST',
+                data: JSON.stringify({id: userId}),
+                async: true,
+                success: function(msg) {
+                    console.log(msg);
+                    window.location.href = '/';
+                },
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrftoken
+                }
+            });
         });
     });
 
@@ -245,7 +231,7 @@
         var size = $('#image-field')[0].files[0].size / 1000000;
 
         if (size > 1) {
-            Materialize.toast('File Size must be smaller than be 1 MB', 3000);
+            Materialize.toast('File Size must be smaller than 1 MB', 3000);
             self.val('upload');
             return;
         }
